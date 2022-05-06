@@ -9,7 +9,9 @@ certifi==2021.10.8
 charset-normalizer==2.0.12
     # via requests
 click==8.1.3
-    # via pip-tools
+    # via
+    #   -r requirements.in
+    #   pip-tools
 idna==3.3
     # via requests
 pep517==0.12.0

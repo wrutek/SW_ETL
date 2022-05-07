@@ -2,8 +2,8 @@
 
 ## run locally
 
-- install docker
-- install docker-compose
+- [install docker](https://docs.docker.com/engine/install/)
+- [install docker-compose](https://docs.docker.com/compose/install/)
 
 for the first time
 ```bash

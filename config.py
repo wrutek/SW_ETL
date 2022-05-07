@@ -8,4 +8,4 @@ CSV_DIR = Path(__file__).parent.resolve().joinpath("media")
 CSV_NAME = "swapi_people.csv"
 CSV_PATH = Path.joinpath(CSV_DIR, CSV_NAME)
 
-EXTERNAL_SERVICE_URL = "http://httpbin.org/post"
+EXTERNAL_SERVICE_URL = "https://httpbin.org/post"

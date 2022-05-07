@@ -5,6 +5,7 @@ RUN apt-get update && apt-get upgrade -y
 COPY . /src/
 RUN pip install -r /src/requirements.txt
 
+# this stage is meant for more "productish" use
 FROM base AS main
 WORKDIR /src
 ENTRYPOINT ["./main.py"]

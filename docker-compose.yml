@@ -7,6 +7,8 @@ services:
       target: development
     volumes:
       - ./:/src
+    environment:
+      - PYTHONPATH=/src
     image: sw-etl
     command: ["./main.py", "fetch-characters"]
     working_dir: /src

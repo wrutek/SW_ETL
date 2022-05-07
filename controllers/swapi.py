@@ -22,7 +22,10 @@ def fetch_characters():
     while next_url:
         resp = requests.get(next_url).json()
         next_url = resp.get("next", None)
-        tmp_char_table = pd.DataFrame.from_dict(resp.get("results", {}))
+        results = resp.get("results", {})
+        if not results:
+            continue
+        tmp_char_table = pd.DataFrame.from_dict(results)
         tmp_char_table = tmp_char_table[["name", "species", "height", "films"]]
         tmp_char_table["species"] = tmp_char_table["species"].apply(_fetch_species)
         tmp_char_table["appearance"] = tmp_char_table["films"].apply(len)
@@ -30,6 +33,8 @@ def fetch_characters():
         tmp_char_table = tmp_char_table[["name", "species", "height", "appearance"]]
         char_table = pd.concat([char_table, tmp_char_table])
     # remove characters that have unknown height
+    if char_table.empty:
+        raise SystemExit("No characters found")
     char_table.dropna(subset=["height"], inplace=True)
     char_table = char_table.sort_values(
         by=["appearance", "height"], ascending=False
@@ -44,11 +49,13 @@ def fetch_characters():
 
 def send_to_external(char_table: pd.DataFrame):
     try:
-        requests.post(
+        resp = requests.post(
             EXTERNAL_SERVICE_URL,
-            data=char_table.to_csv(),
+            data=char_table.to_csv(index=False),
             headers={"Content-Type": "text/csv"},
         )
+        if resp.status_code != 200:
+            raise SystemExit(f"External service returned {resp.status_code}")
     except requests.exceptions.RequestException as e:
         raise SystemExit(e)
 
@@ -64,8 +71,10 @@ def _maybe_convert_to_int(s: str) -> int | None:
 
 def _fetch_species(species_urls: list[str]) -> str:
     """Fetch species from SWAPI and return list of names"""
+    species = []
     for s_url in species_urls:
-        return _fetch_specie(s_url)
+        species.append(_fetch_specie(s_url))
+    return ",".join(species)
 
 
 @cache

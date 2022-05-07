@@ -8,5 +8,5 @@ services:
     volumes:
       - ./:/src
     image: sw-etl
-    entrypoint: ["./main.py"]
+    command: ["./main.py", "fetch-characters"]
     working_dir: /src

@@ -11,4 +11,5 @@ ENTRYPOINT ["./main.py"]
 
 FROM base AS development
 RUN pip install -r /src/requirements-dev.txt
-ENTRYPOINT ["./main.py"]
+WORKDIR /src
+CMD ["./main.py", "fetch-characters"]

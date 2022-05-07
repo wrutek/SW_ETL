@@ -10,7 +10,13 @@ for the first time
 docker-compose up --build
 ```
 
-next runs
+next run this
 ```bash
 docker-compose up
+```
+
+## tests
+
+```bash
+docker-compose run sw_etl pytest
 ```
